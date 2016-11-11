@@ -1,4 +1,4 @@
-
+library(data.table)
 
 userProductHitsToMatrix <- function(product.hits) {
   # takes hits data.table with columns:

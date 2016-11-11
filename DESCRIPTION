@@ -7,3 +7,4 @@ Description: Functions for collaborative filtering.
 License: GPL (>= 2)
 Imports: Rcpp, RcppArmadillo
 LinkingTo: Rcpp, RcppArmadillo
+Suggests: testthat
