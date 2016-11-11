@@ -19,28 +19,9 @@ userProductHitsToMatrix <- function(product.hits) {
   return (res)
 }
 
-
-# defenition of the cosine similarity metric for two vectors
-cosine <- function (x, y) crossprod(x, y) / sqrt(crossprod(x) * crossprod(y))
-
-
 cosineMatrix <- function(m) {
-  # takes hits item matrix and calculates cosine similarity between items.
-  # returns matrix
-  n <- length(m[, 1])
-  res <- matrix(NA, nrow = n, ncol = n, dimnames = dimnames(m))
-
-  # calculate crossproduct matrix.
-  prod.crossprod <- crossprod(m)
-
-  # calculate similarity matrix for products.
-  for(i in 1:n) {
-    for(j in 1:i) {
-      res[i,j] <- prod.crossprod[i, j] / sqrt(prod.crossprod[i, i] * prod.crossprod[j, j])
-    }
-  }
-  res[upper.tri(res)] <- t(res)[upper.tri(res)]
-  return(res)
+  res <- cosineCpp(m)
+  colnames(res) <- colnames(m)
+  rownames(res) <- rownames(m)
+  return (res)
 }
-
-
