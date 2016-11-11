@@ -1,0 +1,9 @@
+Package: recommender
+Type: Package
+Title: Provides functions for collaborative filtering.
+Version: 0.1.0
+Authors@R: person("Bulat", "Yapparov", email = "bulat.yapparov@made.com", role = c("aut", "cre"))
+Description: Functions for collaborative filtering.
+License: GPL (>= 2)
+Imports: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo
