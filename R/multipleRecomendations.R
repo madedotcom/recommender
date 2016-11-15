@@ -24,7 +24,7 @@ product.recommendation <- function(data,SKU,n.of.rec) {
   # n.of.rec - number of recommendations to return
   
   items <- unlist(lapply(SKU, function(x) {
-    grep(x,colnames(product.sim))
+    grep(x,colnames(data))
   })
   )
   
