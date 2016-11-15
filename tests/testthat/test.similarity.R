@@ -20,7 +20,7 @@ test_that("Identifies the correct row", {
   m <- matrix(c(1.00, 0.52, 0.41, 0.52, 
                 0.60, 0.60, 0.23, 0.26, 
                 0.40, 0.30, 0.83, 0.26, 
-                0.62, 0.80, 0.25, 0.16 ), nrow= 4, ncol=4)
+                0.62, 0.80, 0.25, 0.16 ), nrow = 4, ncol = 4)
   
   res <- getNextItem(m, c(1, 2))
   
@@ -34,7 +34,7 @@ test_that("Wrong SKU's don't break the reccomendations", {
   m <- matrix(c(1.00, 0.52, 0.41, 0.52, 
                 0.60, 0.60, 0.23, 0.26, 
                 0.40, 0.30, 0.83, 0.26, 
-                0.62, 0.80, 0.25, 0.16 ), nrow= 4, ncol=4)
+                0.62, 0.80, 0.25, 0.16 ), nrow = 4, ncol = 4)
   
   # Test that a wrong input SKU will return NA
   res <-  productRecommendation(m, items, 2)
