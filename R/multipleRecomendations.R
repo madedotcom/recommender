@@ -16,7 +16,7 @@ getNextItem <- function(product.sim, items) {
   return (which.max(closest.sku))
 }
 
-productRecommendation <- function(data,SKU,n.of.rec) {
+productRecommendation <- function(data, SKU, n.of.rec) {
   # The function that returns a vector of recomended SKUs
   # for a given set of items and a matrix of normalized similarities
   # data - normalized vector of similarities (0 - 1)
@@ -35,9 +35,9 @@ productRecommendation <- function(data,SKU,n.of.rec) {
   recomend <- rep(NA, n.of.rec)
   
   for(i in 1:n.of.rec){
-    index <- getNextItem(data,items)
+    index <- getNextItem(data, items)
     recomend[i] <- colnames(data)[index] 
-    items <- c(items,index)
+    items <- c(items, index)
   }
   
   #Return a vector of recommendations

@@ -22,7 +22,7 @@ test_that("Identifies the correct row", {
                 0.40, 0.30, 0.83, 0.26, 
                 0.62, 0.80, 0.25, 0.16 ), nrow= 4, ncol=4)
   
-  res <- getNextItem(m, c(1,2))
+  res <- getNextItem(m, c(1, 2))
   
   # Test that the function behaves correctly and identifies the 
   # correct row
@@ -37,7 +37,7 @@ test_that("Wrong SKU's don't break the reccomendations", {
                 0.62, 0.80, 0.25, 0.16 ), nrow= 4, ncol=4)
   
   # Test that a wrong input SKU will return NA
-  res <-  productRecommendation(m,items,2)
+  res <-  productRecommendation(m, items, 2)
   expect_equal(res, NA, "NA is returned as expected")
 })
 
