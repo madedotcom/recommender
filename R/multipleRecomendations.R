@@ -8,8 +8,13 @@ getNextItem <- function(product.sim, items) {
   data <- product.sim[, items]
   
   # Calculate the similarity per SKU with the set of items we already
-  # know and flat out the ones we inputed
-  closest.sku <- rowSums(data)
+  # know and flat out the ones we inputed. 
+  if (length(items) > 1) {
+    closest.sku <- rowSums(data)
+  } else {
+    closest.sku <- data
+  }
+  
   closest.sku[items] <- 0
   
   # Return the index of the most similar SKU in the product.sim
