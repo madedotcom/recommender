@@ -64,12 +64,12 @@ test_that("Recommendations work with group", {
   expect_identical(length(res), as.integer(2), "We got two recommedations")
   
   # we are expecting a and d to be recommended as they have high proximity to a and b .
-  expect_identical(res, c("a", "b"), "We got products from diffrent groups")
+  expect_equal(as.character(res), c("a", "b"), "We got products from diffrent groups")
   
   res <- getSimilarProducts(m, viewed.skus, values, exclude.same = F)
-  expect_identical(res, c("a", "d"), "We got products from the same group")
+  expect_equal(as.character(res), c("a", "d"), "We got products from the same group")
   
   res <- getSimilarProducts(m, viewed.skus, values, exclude.same = T)
-  expect_identical(res, c("d", "c"), "We got products where viewed skus are excluded")
+  expect_equal(as.character(res), c("d", "c"), "We got products where viewed skus are excluded")
 })
 
