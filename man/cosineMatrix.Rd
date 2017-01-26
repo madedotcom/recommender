@@ -8,11 +8,11 @@ Cosine similarity transformation for product hits.
 Tranforms product hits matrix to product similarity matrix.
 }
 \usage{
-cosineMatrix(x)
+cosineMatrix(m)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{m}{
 Matrix of prouct hits
 }
 }
