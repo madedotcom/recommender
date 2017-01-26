@@ -64,7 +64,7 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   
   # Turn recommendations matrix into a normalised data table
   # We are filtering to the list of relevant skus.
-  product.affinity <- melt(sim.matrix[skus, ], na.rm = T)
+  product.affinity <- melt(sim.matrix[skus, , drop=FALSE], na.rm = T)
   colnames(product.affinity) <- c("sku", "sku.rec", "sim")
   product.affinity <- data.table(product.affinity, key = c("sku", "sku.rec"))
   levels(product.affinity$sku) <- levels(product.affinity$sku.rec)
