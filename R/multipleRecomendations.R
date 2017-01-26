@@ -59,7 +59,7 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   # @sim.matrix - similarity matrix.
   # @skus - skus derived from the visitor history.
   # @values - required number of recommendations.
-  # @exclude.same - 
+  # @exclude.same - excludes recommendations for values in skus.
   # @groups - named vector of sku categories.
   
   # Turn recommendations matrix into a normalised data table
@@ -67,8 +67,10 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   product.affinity <- melt(sim.matrix[skus, ], na.rm = T)
   colnames(product.affinity) <- c("sku", "sku.rec", "sim")
   product.affinity <- data.table(product.affinity, key = c("sku", "sku.rec"))
+  levels(product.affinity$sku) <- levels(product.affinity$sku.rec)
   if(exclude.same) {
     product.affinity <- product.affinity[sku != sku.rec]
+    product.affinity <- product.affinity[!sku.rec %in% skus]
   }
   combined.scores <- product.affinity[, list(sim = mean(sim)), by = sku.rec]
   setkey(combined.scores, "sku.rec")
