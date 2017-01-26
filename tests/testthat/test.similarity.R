@@ -71,5 +71,16 @@ test_that("Recommendations work with group", {
   
   res <- getSimilarProducts(m, viewed.skus, values, exclude.same = T)
   expect_equal(as.character(res), c("d", "c"), "We got products where viewed skus are excluded")
+  
+  # Set group and exclude same SKUs
+  res <- getSimilarProducts(m, viewed.skus, values, exclude.same = T, sku.groups)
+  expect_equal(as.character(res), c("d", "c"), "We get both skus as groups for c & d are different")
+
+  # Setting same group for c & d
+  sku.groups <- c("a" = "p1", "b" = "p2", "c" = "p3", "d" = "p3")
+  res <- getSimilarProducts(m, viewed.skus, values, exclude.same = T, sku.groups)
+  expect_equal(as.character(res), c("d"), "We get only one skus as group for c & d are the same")
+  
+  
 })
 

@@ -79,10 +79,10 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   if(!missing(groups)) {
     # Append group data to affinity table
     groups.table <- data.table(sku = names(groups), group = groups, key= "sku")
-    combined.scores <- combined.scores[groups.table]
+    combined.scores <- combined.scores[groups.table, nomatch=0]
     
     # Get the best performing sku per group
-    combined.scores <- combined.scores[combined.scores[, .I[sim == max(sim)], by = group]$V1]
+    combined.scores <- combined.scores[combined.scores[, .I[sim == max(sim, na.rm = T)], by = group]$V1]
   }
 
   # Limit results to the requested number of skus
