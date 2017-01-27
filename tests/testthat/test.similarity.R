@@ -24,6 +24,14 @@ test_that("Similarity matrix is calculated correctly.", {
    expect_equal(rownames(res), rownames(m), "Row names in result are same as original matrix.")
 })
 
+test_that("User hits table produces correct sparce matrix", {
+  user.hits <- data.table(users = c("u1", "u2", "u1"), products = c("p1", "p2", "p3"))
+  res <- userProductHitsToMatrix(user.hits)
+  expect_identical(res["p1", "p3"], as.integer(1), "Products p1 & p3 were hit by one user(u1)")
+  expect_true(!("p2" %in% colnames(res)), "Product p2 was not hit by any users with any other product.")
+
+})
+
 test_that("Recommendations work with group", {
 
   m <- test.sim.matrix
