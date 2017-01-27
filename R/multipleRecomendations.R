@@ -14,7 +14,7 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
     warning("Following skus are missing from the sim.matrix: ", paste(missing.skus, collapse = ", "))
   }
   # only keep skus that are in the similarity matrix
-  skus <- intersect(skus, colnames(sim.matrix))
+  skus <- setdiff(skus, missing.skus)
   
   # Turn recommendations matrix into a normalised data table
   # We are filtering to the list of relevant skus.
