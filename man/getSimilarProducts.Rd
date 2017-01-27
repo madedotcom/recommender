@@ -13,7 +13,7 @@ getSimilarProducts(sim.matrix, skus, values, exclude.same, groups)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{simi.matrix}{
+  \item{sim.matrix}{
     Similarity matrix calculatd from of product hits
   }
    \item{skus}{
