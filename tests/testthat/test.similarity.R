@@ -70,7 +70,11 @@ test_that("Recommendations work with group", {
 
   viewed.skus <- c("a")
   res <- getSimilarProducts(m, viewed.skus, 1, exclude.same = T)
-  expect_equal(as.character(res), c("d"), "We get only one skus as group for c & d are the same")
+  expect_equal(as.character(res), c("d"), "We get only one skus as requested")
 
+  viewed.skus <- c("z") # sku does not exist in the matrix.
+  res <- getSimilarProducts(m, viewed.skus, 5, exclude.same = T)
+  expect_identical(length(res), as.integer(0), "Result is empty for sku that is not in the similarity matrix")
+  expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T))
 })
 
