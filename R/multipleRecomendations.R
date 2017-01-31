@@ -9,7 +9,7 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   # @exclude.same - excludes recommendations for values in skus.
   # @groups - named vector of sku categories.
 
-  missing.skus <- setdiff(skus, colnames(sim.matrix))
+  missing.skus <- setdiff(skus, rownames(sim.matrix))
   if(length(missing.skus) > 0) {
     warning("Following skus are missing from the sim.matrix: ", paste(missing.skus, collapse = ", "))
   }
