@@ -78,10 +78,6 @@ test_that("Recommendations work with group", {
   expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T))
 })
 
-
-
-
-
 test_that("Recommendations work with group", {
     
   m <- test.sim.matrix
