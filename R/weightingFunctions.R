@@ -11,9 +11,9 @@ abjustSimMatrix <- function(data, weights) {
   names(weights) <- weights.final$sku
   
   print(weights)
-  rows <- sapply(names(weights), function(x) {
+  transformed.data <- sapply(names(weights), function(x) {
       data[, colnames(data) %in% x] <- data[, colnames(data) %in% x] * weights[[x]]
   })
   
-  return (rows)
+  return (transformed.data)
 }
