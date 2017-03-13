@@ -78,38 +78,21 @@ test_that("Recommendations work with group", {
   expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T))
 })
 
-test_that("Fitting function works properly", {
-  
-  stock <- c(10000)
-  
-  res <- fitStockLevel(stock)
-  expect_identical(res, c(1.0), "Return 1.0 for everything above 200 in stock")
-  
-  stock <- c(10)
-  
-  res <- fitStockLevel(stock)
-  expect_identical(res, c(0.05), "Return a low percentage for skus with few items")
-  
-  stock <- c(0)
-  
-  res <- fitStockLevel(stock)
-  expect_identical(res, c(0.0), "Return 0 for skus with no items in stock")
 
-  stock <- c(-1)
-  res <- fitStockLevel(stock)
-  expect_identical(res, c(0.0), "Return 0 for wrongly inputed skus with negative items in stock")
-})
 
-test_that("Weighting function works properly", {
-  
-  stock <- c(100, 200, 0)
-  
-  res <- getProductkWeights(stock, "stock")
-  expect_identical(res, c(0.5, 1.0, 0.0), "Correctly returning the weights")
-  
-  stock <- c(-10, NA)
-  
-  res <- getProductkWeights(stock, "stock")
-  expect_identical(res, c(0.0, 0.0), "Correctly returning the weights")
+
+
+test_that("Recommendations work with group", {
+    
+  m <- test.sim.matrix
+  w <- c("a" = 1, "e" = 0.22, "b" = 0.75, "c" = 0.5, "d" = 0.25)
+  res <- abjustSimMatrix(m, w)
+
+  expect_identical(m[, 1], res[, 1])
+  expect_identical(m[, 2]*0.75, res[, 2])
+
+  w <- c("a" = 1)
+  res <- abjustSimMatrix(m, w)
+  expect_identical(m[, 3] * 0, res[, 3])
   
 })
