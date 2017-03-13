@@ -90,5 +90,9 @@ test_that("Recommendations work with group", {
   w <- c("a" = 1)
   res <- abjustSimMatrix(m, w)
   expect_identical(m[, 3] * 0, res[, 3])
+
+  w <- c("b" = 0.2, "a" = 1)
+  res <- abjustSimMatrix(m, w)
+  expect_identical(m[, 2] * 0.2, res[, 2])
   
 })
