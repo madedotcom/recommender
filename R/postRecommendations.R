@@ -29,9 +29,36 @@ getAffinity <- function(type){
 #'
 #'
 #'
-complimentaryFiltering <- function(affinity, ){
+complimentaryFiltering <- function(affinity){
   complimentary.skus <- NULL
   
+  
+  type.suggestions <- returnTopTypes(type, affinity, n.of.types = 3)
+  
   return (complimentary.skus)
+}
+
+#' The function that return the n nearest types to the given ones
+#'
+#' @param type - the type (subcategory/category/type) to be checked
+#' @param data - the matrix of connections between the types
+#' @param n.of.types - the number of n nearest types
+#' @param exlude.same - remove the same type from the results
+returnTopTypes <- function(type, data, n.of.types = 3,
+                           exclude.same = TRUE) {
+  res <-  data[Type %in% type]
+  if (dim(res)[1] == 0) {
+    return (NA)
+  }
+  res[, Type := NULL]
+  res <- colSums(res)
+  
+  order.data <- order(-res)
+  res.type <- names(res)[order.data]
+  if (exclude.same){
+    res.type <- res.type[!(res.type %in% type)]
+  }
+  
+  return (res.type[1:n.of.types])
 }
 
