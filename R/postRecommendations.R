@@ -5,16 +5,22 @@
 #' @param values - required number of recommendations.
 #' @param exclude.same - excludes recommendations for values in skus.
 #' @param groups - named vector of sku categories.
-#' @param affinity.groups - grouping affinity
 #' @param affinity - affinity matrix
-getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same, groups = NULL, 
-                                     affinity){
+#' @param sku.details - named vector of skus and types
+#' @param n.of.types - number of types the results should be selected from
+getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TRUE, groups = NULL, 
+                                     affinity, sku.details, n.of.types){
 
-  poi
+  sku.types <- names(skus)
   
-  getSimilarProducts(sim.matrix[, positions.to.retain], 
-                     browsed.skus, results, exlcude.same)  
-    
+  types <- returnTopTypes(sku.types, affinity, n.of.types, exclude.same) 
+
+  selected.skus <- sku.details[category %in% types]
+  
+  positions.to.retain <- (row.names(sim.matrix) %in% selected.skus$sku)
+  rec <- getSimilarProducts(sim.matrix[, positions.to.retain], skus, values, exclude.same)
+
+  return (rec)
 }
 
 #' Return the affinity matrix from s3
@@ -25,18 +31,6 @@ getAffinity <- function(type){
   return (affinity)
 }
 
-#'
-#'
-#'
-#'
-complimentaryFiltering <- function(affinity){
-  complimentary.skus <- NULL
-  
-  
-  type.suggestions <- returnTopTypes(type, affinity, n.of.types = 3)
-  
-  return (complimentary.skus)
-}
 
 #' The function that return the n nearest types to the given ones
 #'
@@ -58,7 +52,6 @@ returnTopTypes <- function(type, data, n.of.types = 3,
   if (exclude.same){
     res.type <- res.type[!(res.type %in% type)]
   }
-  
   return (res.type[1:n.of.types])
 }
 

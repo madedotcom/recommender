@@ -50,19 +50,28 @@ test_that("Post order recommendations correctly retrieved", {
                                   A1 = c(1.0, 0.5, 0.2),
                                   A2 = c(0.5, 1.0, 0.1),
                                   A3 = c(0.2, 0.1, 1.0))
-  skus <- "A"
-  sku.types <- "A1"
-  
-  res <- crossSaleRecommendations(sim.matrix, sku.details, post.order.matrix,
-                                  skus, sku.types, 2, exclude.same = TRUE)
+  skus <-c("A1" = "A")
+
+  res <- getComplimentaryProducts(sim.matrix = sim.matrix, 
+                                  skus = skus, 
+                                  values = 2, 
+                                  groups = sku.details$category,
+                                  affinity = post.order.matrix, 
+                                  sku.details = sku.details,
+                                  n.of.types = 2)  
   expect_equal(as.character(res), c("D", "C"), "Bring the correct post recommendations.")
   
-  skus <- c("A", "C")
-  sku.types <- c("A1", "A2")
+  skus <- c("A3" = "D", 
+            "A2" = "C")
   
-  res <- crossSaleRecommendations(sim.matrix, sku.details, post.order.matrix,
-                                  skus, sku.types, 2, exclude.same = TRUE)
-  expect_equal(as.character(res), c("D", "C"), "Bring the correct post recommendations.")
+  res <- getComplimentaryProducts(sim.matrix = sim.matrix, 
+                                  skus = skus, 
+                                  values = 1, 
+                                  groups = sku.details$category,
+                                  affinity = post.order.matrix, 
+                                  sku.details = sku.details,
+                                  n.of.types = 2)  
+
+  expect_equal(as.character(res), c("A"), "Bring the correct post recommendations.")
   
 })
-
