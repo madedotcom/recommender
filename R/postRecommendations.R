@@ -23,15 +23,6 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
   return (rec)
 }
 
-#' Return the affinity matrix from s3
-#'
-#' @param type - the given the level of affinity connection (subcategory, category, type)
-getAffinity <- function(type){
-  affinity <- s3GetFile(paste0("recommendations/", type, "_next_order.csv"))
-  return (affinity)
-}
-
-
 #' The function that return the n nearest types to the given ones
 #'
 #' @param type - the type (subcategory/category/type) to be checked
