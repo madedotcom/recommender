@@ -18,7 +18,7 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
   selected.skus <- sku.details[category %in% types]
   
   positions.to.retain <- (row.names(sim.matrix) %in% selected.skus$sku)
-  rec <- getSimilarProducts(sim.matrix[, positions.to.retain], skus, values, exclude.same)
+  rec <- getSimilarProducts(sim.matrix[, positions.to.retain], skus, values, exclude.same = TRUE)
 
   return (rec)
 }
