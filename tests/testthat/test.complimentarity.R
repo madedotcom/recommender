@@ -1,5 +1,29 @@
 context("Post order functions.")
 
+test_that("Calculation of post order affinities", {
+  
+  transactions <- data.table(
+                  UID =       c("A",  "B",  "C",  "D",  "A",  "A",  "B",  "C"),
+                  reference = c("A1", "B1", "C1", "D1", "A2", "A2", "B2", "C2"),
+                  type =      c("a",  "b",  "a",  "d",  "b",  "c",  "d",  "c"))
+  
+  map <-  calculatePostOrderTable(transactions)
+
+  expect_true(map[type == "a"]$b == 1, "Correct post order mapping info found")
+  expect_true(map[type == "a"]$c == 2, "Correct post order mapping info found")
+  
+  transactions <- data.table(
+    UID =       c("A",  "B",  "A",  "A" , "A",  "B",  "A"),
+    reference = c("A1", "B1", "A2", "A2", "A2", "B2", "A3"),
+    type =      c("a",  "b",  "b",  "c",  "d",  "a",  "a"))
+  
+  map <-  calculatePostOrderTable(transactions)
+
+  expect_true(map[type == "a"]$b == 1, "Correct post order mapping info found")
+  expect_true(map[type == "b"]$a == 2, "Correct post order mapping info found")
+  
+})
+
 test_that("Top types are correctly retrieved", {
   
   type <- "A"

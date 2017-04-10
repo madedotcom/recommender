@@ -46,3 +46,22 @@ returnTopTypes <- function(type, data, n.of.types = 3,
   return (res.type[1:n.of.types])
 }
 
+#' Given a list of transactions the post order affinity table is calculated.
+#' The expected format of transactions is a a data.table with
+#' UID - unique customer identifier
+#' reference - Grouping of orders
+#' type - type per item in an order
+#'
+#' @param transactions - a data.table with transaction data
+calculatePostOrderTable <- function(transactions) {
+  # Calculate the type
+  uid.orders <- simplify.transactions(transactions$UID, transactions$reference)
+  
+  # Calculate the types connection matrix
+  orders.type <- simplify.transactions(transactions$reference, transactions$type)
+  
+  map.type   <- calculateConnectionMatrix(uid.orders, orders.type)
+  map.matrix <- connectionsToCounts(map.type)
+  
+  return (map.matrix)
+}
