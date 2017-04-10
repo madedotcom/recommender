@@ -27,33 +27,33 @@ test_that("Calculation of post order affinities", {
 test_that("Top types are correctly retrieved", {
   
   type <- "A"
-  data <- data.table(Type = c("A","B","C","D"), 
+  data <- data.table(type = c("A","B","C","D"), 
                      A = c(1.0, 0.4, 0.5, 0.1), 
                      B = c(0.1, 1.0, 0.2, 0.8), 
                      C = c(0.2, 0.6, 1.0, 0.9), 
                      D = c(0.6, 0.2, 0.8, 1.0))
   
-  res <- returnTopTypes(type, data, 1, TRUE)
+  res <- getNextOrderTopTypes(type, data, 1, TRUE)
   expect_equal(res, "D", "Return the correct match.")
   
-  res <- returnTopTypes(type, data, 1, FALSE)
+  res <- getNextOrderTopTypes(type, data, 1, FALSE)
   expect_equal(res, "A", "Return the correct match if not excluding itself.")
   
   type <- c("A", "D")
-  res <- returnTopTypes(type, data, 1, TRUE)
+  res <- getNextOrderTopTypes(type, data, 1, TRUE)
   expect_equal(res, "C", "Return the correct match multiple types.")
   
   type <- c("A", "D")
-  res <- returnTopTypes(type, data, 1, FALSE)
+  res <- getNextOrderTopTypes(type, data, 1, FALSE)
   expect_equal(res, "D", "Return the correctmatch multiple types if not excluding itself.")
   
   type <- c("A", "D", "Error")
-  res <- returnTopTypes(type, data, 1, FALSE)
+  res <- getNextOrderTopTypes(type, data, 1, FALSE)
   expect_equal(res, "D", "Return the correctmatch multiple types if not excluding itself
                with extra unknown columns.")
   
   type <- c("As", "Ds")
-  res <- returnTopTypes(type, data, 1, FALSE)
+  res <- getNextOrderTopTypes(type, data, 1, FALSE)
   expect_equal(res, NA, "Return NA if the types are unknown.")
   
 })
@@ -70,7 +70,7 @@ test_that("Post order recommendations correctly retrieved", {
   sim.matrix <- matrix(sim.matrix, nrow = 4, ncol = 4)
   colnames(sim.matrix) <- rownames(sim.matrix) <- c("A", "B", "C", "D")
   
-  post.order.matrix <- data.table(Type = c("A1", "A2", "A3"),
+  post.order.matrix <- data.table(type = c("A1", "A2", "A3"),
                                   A1 = c(1.0, 0.5, 0.2),
                                   A2 = c(0.5, 1.0, 0.1),
                                   A3 = c(0.2, 0.1, 1.0))

@@ -13,7 +13,7 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 
   sku.types <- names(skus)
   
-  types <- returnTopTypes(sku.types, affinity, n.of.types, exclude.same) 
+  types <- getNextOrderTopTypes(sku.types, affinity, n.of.types, exclude.same) 
 
   selected.skus <- sku.details[category %in% types]
   
@@ -25,23 +25,23 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 
 #' The function that return the n nearest types to the given ones
 #'
-#' @param type - the type (subcategory/category/type) to be checked
-#' @param data - the matrix of connections between the types
+#' @param types - the vector of types (subcategory/category/type) to be checked
+#' @param nextOrderMatrix - the matrix of connections between the types
 #' @param n.of.types - the number of n nearest types
 #' @param exlude.same - remove the same type from the results
-returnTopTypes <- function(type, data, n.of.types = 3,
+getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
                            exclude.same = TRUE) {
-  res <-  data[Type %in% type]
+  res <-  nextOrderMatrix[type %in% types]
   if (dim(res)[1] == 0) {
     return (NA)
   }
-  res[, Type := NULL]
+  res[, type := NULL]
   res <- colSums(res)
   
   order.data <- order(-res)
   res.type <- names(res)[order.data]
   if (exclude.same){
-    res.type <- res.type[!(res.type %in% type)]
+    res.type <- res.type[!(res.type %in% types)]
   }
   return (res.type[1:n.of.types])
 }
