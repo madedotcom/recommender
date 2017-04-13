@@ -4,7 +4,8 @@
 \alias{getNextOrderTopTypes}
 \title{The function that return the n nearest types to the given ones}
 \usage{
-getNextOrderTopTypes(types, nextOrderMatrix, 3, TRUE)
+getNextOrderTopTypes(types, nextOrderMatrix, n.of.types = 3,
+  exclude.same = TRUE)
 }
 \arguments{
 \item{types}{- the vector of types (subcategory/category/type) to be checked}
@@ -13,7 +14,7 @@ getNextOrderTopTypes(types, nextOrderMatrix, 3, TRUE)
 
 \item{n.of.types}{- the number of n nearest types}
 
-\item{exlude.same}{- remove the same type from the results}
+\item{exclude.same}{- remove the same type from the results}
 }
 \description{
 The function that return the n nearest types to the given ones

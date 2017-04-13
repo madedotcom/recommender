@@ -28,8 +28,7 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 #' @param types - the vector of types (subcategory/category/type) to be checked
 #' @param nextOrderMatrix - the matrix of connections between the types
 #' @param n.of.types - the number of n nearest types
-#' @param exlude.same - remove the same type from the results
-#' @usage getNextOrderTopTypes(types, nextOrderMatrix, 3, TRUE)
+#' @param exclude.same - remove the same type from the results
 getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
                            exclude.same = TRUE) {
   res <-  nextOrderMatrix[type %in% types]
