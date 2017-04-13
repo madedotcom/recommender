@@ -25,14 +25,14 @@ calculateConnectionMatrix <- function(orders, mapping) {
 
 #' Calculates the connections matrix given the pair of orders
 #' 
-#'@param data - a data table with sku1 and sku2 columns that hold the first order type and second order type
+#'@param data - a data table with type1 and type2 columns that hold the first order type and second order type
 connectionsToCounts <- function(data) {
   data <- data[!is.na(data)]
   data.list <- rbindlist(data)
   
-  res <- dcast(data.list, sku1 ~ sku2, fun.aggregate = length)
-  res[, type := gsub(" ", "_", sku1)]
-  res[, sku1 := NULL]
+  res <- dcast(data.list, type1 ~ type2, fun.aggregate = length)
+  res[, type := gsub(" ", "_", type1)]
+  res[, type1 := NULL]
   
   return (res)
 }
@@ -45,13 +45,13 @@ connectionsToCounts <- function(data) {
 #' @param list.of.orders - a single list of orders
 #' @param order.mapping - a single list of items per order
 connectOrderMapping <- function(list.of.orders, order.mapping){
-  sku1 <- NULL
-  sku2 <- NULL
+  type1 <- NULL
+  type2 <- NULL
   for (i in 1:(length(list.of.orders) - 1)){
-    tmpSkus <- order.mapping[[list.of.orders[i]]] # Get the categories of the first order
-    tmpSkus2<- order.mapping[[list.of.orders[i+1]]] # Get the categories of the next order
-    sku1 <- c(sku1, rep(tmpSkus,  length(tmpSkus2))) # Each item of the first order connects to each item of the second order
-    sku2 <- c(sku2, rep(tmpSkus2, length(tmpSkus))) # Repeat the second order to match each items of the first
+    tmpTypes <- order.mapping[[list.of.orders[i]]] # Get the categories of the first order
+    tmpTypes2<- order.mapping[[list.of.orders[i+1]]] # Get the categories of the next order
+    type1 <- c(type1, rep(tmpTypes,  length(tmpTypes2))) # Each item of the first order connects to each item of the second order
+    type2 <- c(type2, rep(tmpTypes2, length(tmpTypes))) # Repeat the second order to match each items of the first
   }
-  return (data.frame(t(rbind(sku1, sku2))))
+  return (data.frame(t(rbind(type1, type2))))
 }

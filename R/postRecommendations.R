@@ -52,8 +52,9 @@ getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
 #' UID - unique customer identifier
 #' reference - Grouping of orders
 #' type - type per item in an order
-#'
+#' 
 #' @param transactions - a data.table with transaction data
+#' @return data.table with counts of type affinities based on the transaction data
 getProductGroupAffinities <- function(transactions) {
   # Calculate the type
   uid.orders <- simplify.transactions(transactions$UID, transactions$reference)
