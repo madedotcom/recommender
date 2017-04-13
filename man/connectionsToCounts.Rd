@@ -7,7 +7,7 @@
 connectionsToCounts(data)
 }
 \arguments{
-\item{data}{- a data table with sku1 and sku2 columns that hold the first order type and second order type}
+\item{data}{- a data table with type1 and type2 columns that hold the first order type and second order type}
 }
 \description{
 Calculates the connections matrix given the pair of orders

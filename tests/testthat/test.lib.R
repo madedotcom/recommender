@@ -18,6 +18,7 @@ test_that("Simplify lists", {
 })
 
 test_that("Connect order types ", {
+  
   f <- c("A", "B", "A")
   s <- c("a", "b", "c")
   
@@ -28,7 +29,10 @@ test_that("Connect order types ", {
   
   mapping <- simplify.transactions(f, s)
   
+  # Given the two lists orders and mapping constructs a melted version of a two column connection between
+  # them based of s1 and f1 
   counts <- calculateConnectionMatrix(orders, mapping)
+  # Casting the result of the melt into a table of counts
   res <- connectionsToCounts(counts)
   
   expect_true(res[type == "a1"]$a2 == 1, "Correct counts returned")
