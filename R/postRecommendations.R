@@ -1,5 +1,6 @@
 #' Function to return complimentary product recommendations
 #'
+#' @export
 #' @param sim.matrix - similarity matrix.
 #' @param skus - skus derived from the visitor history.
 #' @param values - required number of recommendations.
@@ -25,6 +26,7 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 
 #' The function that return the n nearest types to the given ones
 #'
+#' @export
 #' @param types - the vector of types (subcategory/category/type) to be checked
 #' @param nextOrderMatrix - the matrix of connections between the types
 #' @param n.of.types - the number of n nearest types
@@ -52,6 +54,7 @@ getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
 #' reference - Grouping of orders
 #' type - type per item in an order
 #' 
+#' @export
 #' @param transactions - a data.table with transaction data
 #' @return data.table with counts of type affinities based on the transaction data
 getProductGroupAffinities <- function(transactions) {
