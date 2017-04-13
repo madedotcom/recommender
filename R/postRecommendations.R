@@ -29,6 +29,7 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 #' @param nextOrderMatrix - the matrix of connections between the types
 #' @param n.of.types - the number of n nearest types
 #' @param exlude.same - remove the same type from the results
+#' @usage getNextOrderTopTypes(types, nextOrderMatrix)
 getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
                            exclude.same = TRUE) {
   res <-  nextOrderMatrix[type %in% types]
@@ -53,7 +54,7 @@ getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
 #' type - type per item in an order
 #'
 #' @param transactions - a data.table with transaction data
-calculatePostOrderTable <- function(transactions) {
+getProductGroupAffinities <- function(transactions) {
   # Calculate the type
   uid.orders <- simplify.transactions(transactions$UID, transactions$reference)
   

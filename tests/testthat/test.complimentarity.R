@@ -7,7 +7,7 @@ test_that("Calculation of post order affinities", {
                   reference = c("A1", "B1", "C1", "D1", "A2", "A2", "B2", "C2"),
                   type =      c("a",  "b",  "a",  "d",  "b",  "c",  "d",  "c"))
   
-  map <-  calculatePostOrderTable(transactions)
+  map <-  getProductGroupAffinities(transactions)
 
   expect_true(map[type == "a"]$b == 1, "Correct post order mapping info found")
   expect_true(map[type == "a"]$c == 2, "Correct post order mapping info found")
@@ -17,7 +17,7 @@ test_that("Calculation of post order affinities", {
     reference = c("A1", "B1", "A2", "A2", "A2", "B2", "A3"),
     type =      c("a",  "b",  "b",  "c",  "d",  "a",  "a"))
   
-  map <-  calculatePostOrderTable(transactions)
+  map <-  getProductGroupAffinities(transactions)
 
   expect_true(map[type == "a"]$b == 1, "Correct post order mapping info found")
   expect_true(map[type == "b"]$a == 2, "Correct post order mapping info found")
