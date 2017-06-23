@@ -21,7 +21,6 @@ getSimilarProducts <- function(sim.matrix, skus, values, exclude.same, groups = 
   product.affinity <- melt(sim.matrix[skus, , drop=FALSE], na.rm = T)
   colnames(product.affinity) <- c("sku", "sku.rec", "sim")
   product.affinity <- data.table(product.affinity, key = c("sku", "sku.rec"))
-  levels(product.affinity$sku) <- levels(product.affinity$sku.rec)
   if(exclude.same) {
     product.affinity <- product.affinity[!(sku.rec %in% skus)]
   }
