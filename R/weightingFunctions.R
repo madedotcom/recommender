@@ -11,12 +11,12 @@ abjustSimMatrix <- function(data, weights, default = 0) {
   weights.final <- merge(weights.init, weights.given, by = "sku", all.x=TRUE)
 
   weights.final[, weight := pmax(weights.x, weights.y, na.rm = TRUE)]
+
+  # Vector of weights to adjust values in similarity matrix
   weights <- weights.final$weight
   names(weights) <- weights.final$sku
-  
-  transformed.data <- sapply(names(weights), function(x) {
-      data[, colnames(data) %in% x] <- data[, colnames(data) %in% x] * weights[[x]]
-  })
-  
-  return (transformed.data)
+
+  # Multiply values in columns by corresponding values in vector
+  res <- sweep(data, MARGIN = 2, weights, `*`)
+  return (res)
 }
