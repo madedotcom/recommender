@@ -4,6 +4,8 @@
 #' @param weights a vector with weights for the columns of the data table
 #' @param default a default weight to be applied
 abjustSimMatrix <- function(data, weights, default = 0) {
+  weight <- weights.x <- weights.y <- NULL # fix note for data.table fields
+
   weights.init <-  data.table(sku = colnames(data),
                               weights = default)
   weights.given <- data.table(sku = names(weights),

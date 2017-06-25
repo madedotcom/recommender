@@ -3,7 +3,7 @@
 \name{calculateConnectionMatrix}
 \alias{calculateConnectionMatrix}
 \title{Calculates for each UID the connection as a list of two column results
-on the first resulting column there is the first order type and on the 
+on the first resulting column there is the first order type and on the
 second column is the subsequent order type.}
 \usage{
 calculateConnectionMatrix(orders, mapping)
@@ -15,6 +15,6 @@ calculateConnectionMatrix(orders, mapping)
 }
 \description{
 Calculates for each UID the connection as a list of two column results
-on the first resulting column there is the first order type and on the 
+on the first resulting column there is the first order type and on the
 second column is the subsequent order type.
 }

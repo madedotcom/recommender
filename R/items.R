@@ -1,10 +1,12 @@
-
+#' Turns interactions data table into a matrix
+#'
+#' @export
+#' @param product.hits data.table with columns:  visitor.id, product attribute
+#' @return Returns sparse matrix for interactions between products within user sessions,
+#'   meaning number of visitors that viewed/bought products together.
 userProductHitsToMatrix <- function(product.hits) {
-  # takes hits data.table with columns:
-  # 1. visitor.id
-  # 2. sku, or any other product attribute
-  # Returns sparse matrix for interactions between products within user sessions.
-  # Meaning number of visitors that viewed/bought products together.
+  sku.x <- sku.y <- NULL
+
   colnames(product.hits) <- c("visitor.id", "sku")
 
   product.matches <- merge(product.hits, product.hits, by = "visitor.id", allow.cartesian = TRUE)
@@ -18,6 +20,12 @@ userProductHitsToMatrix <- function(product.hits) {
   return (res)
 }
 
+#' Cosine similarity transformation for product hits
+#' @export
+#' @useDynLib recommender
+#' @description Tranforms product hits matrix to product similarity matrix
+#' @param m matrix of product hit counts that happened in a single session
+#' @return product similarity matrix
 cosineMatrix <- function(m) {
   res <- cosineCpp(m)
   colnames(res) <- colnames(m)
