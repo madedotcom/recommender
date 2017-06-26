@@ -10,7 +10,7 @@ colnames(test.sim.matrix) <- rownames(test.sim.matrix) <- c("a", "b", "c", "d")
 
 test_that("Similarity matrix is calculated correctly.", {
    m <- matrix(c(1, 0, 0, 1, 1, 0, 0, 1, 1), nrow = 3, ncol = 3)
-   res <- cosineCpp(m)
+   res <- cosineMatrix(m)
    expect_identical(res[1, 3], 0, "Products are ortoganal, cosine is zero.")
    expect_identical(res[2, 2], 1, "Product self cosine is one.")
    expect_identical(res[2, 3], 0.5, "Product have overlapping values.")
@@ -76,23 +76,4 @@ test_that("Recommendations work with group", {
   res <- getSimilarProducts(m, viewed.skus, 5, exclude.same = T)
   expect_identical(length(res), as.integer(0), "Result is empty for sku that is not in the similarity matrix")
   expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T), regexp = "skus are missing.*z$")
-})
-
-test_that("Weighting a similarity matrix", {
-    
-  m <- test.sim.matrix
-  w <- c("a" = 1, "e" = 0.22, "b" = 0.75, "c" = 0.5, "d" = 0.25)
-  res <- abjustSimMatrix(m, w)
-
-  expect_identical(m[, 1], res[, 1], "First column returned correctly with no changes")
-  expect_identical(m[, 2]*0.75, res[, 2], "Order is kept and calculation is correct")
-
-  w <- c("a" = 1)
-  res <- abjustSimMatrix(m, w)
-  expect_identical(m[, 3] * 0, res[, 3], "Defaulting is working as expected")
-
-  w <- c("b" = 0.2, "a" = 1)
-  res <- abjustSimMatrix(m, w)
-  expect_identical(m[, 2] * 0.2, res[, 2], "Ordering is kept intact")
-  
 })

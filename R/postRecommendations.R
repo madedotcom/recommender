@@ -1,6 +1,7 @@
 #' Function to return complimentary product recommendations
 #'
 #' @export
+#' @import data.table
 #' @param sim.matrix - similarity matrix.
 #' @param skus - skus derived from the visitor history.
 #' @param values - required number of recommendations.
@@ -9,15 +10,14 @@
 #' @param affinity - affinity matrix
 #' @param sku.details - named vector of skus and types
 #' @param n.of.types - number of types the results should be selected from
-getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TRUE, groups = NULL, 
-                                     affinity, sku.details, n.of.types){
+getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TRUE, groups = NULL,
+                                     affinity, sku.details, n.of.types) {
+  category <- NULL
 
   sku.types <- names(skus)
-  
-  types <- getNextOrderTopTypes(sku.types, affinity, n.of.types, exclude.same) 
-
+  types <- getNextOrderTopTypes(sku.types, affinity, n.of.types, exclude.same)
   selected.skus <- sku.details[category %in% types]
-  
+
   positions.to.retain <- (row.names(sim.matrix) %in% selected.skus$sku)
   rec <- getSimilarProducts(sim.matrix[, positions.to.retain], skus, values, exclude.same = TRUE)
 
@@ -33,13 +33,15 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
 #' @param exclude.same - remove the same type from the results
 getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
                            exclude.same = TRUE) {
+  type <- NULL
+
   res <-  nextOrderMatrix[type %in% types]
   if (dim(res)[1] == 0) {
     return (NA)
   }
   res[, type := NULL]
   res <- colSums(res)
-  
+
   order.data <- order(-res)
   res.type <- names(res)[order.data]
   if (exclude.same){
@@ -53,19 +55,19 @@ getNextOrderTopTypes <- function(types, nextOrderMatrix, n.of.types = 3,
 #' UID - unique customer identifier
 #' reference - Grouping of orders
 #' type - type per item in an order
-#' 
+#'
 #' @export
 #' @param transactions - a data.table with transaction data
 #' @return data.table with counts of type affinities based on the transaction data
 getProductGroupAffinities <- function(transactions) {
   # Calculate the type
   uid.orders <- simplify.transactions(transactions$UID, transactions$reference)
-  
+
   # Calculate the types connection matrix
   orders.type <- simplify.transactions(transactions$reference, transactions$type)
-  
+
   map.type   <- calculateConnectionMatrix(uid.orders, orders.type)
   map.matrix <- connectionsToCounts(map.type)
-  
+
   return (map.matrix)
 }

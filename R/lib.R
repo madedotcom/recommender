@@ -1,13 +1,13 @@
 #' Simplify two vector lists
 #'
-#' @param f - Vector to be used as the grouping 
+#' @param f - Vector to be used as the grouping
 #' @param s - Vector to include the values per grouping category
 simplify.transactions <- function(f, s) {
   tapply(s, f, function(x) {unique(x)}, simplify = T)
 }
 
 #' Calculates for each UID the connection as a list of two column results
-#' on the first resulting column there is the first order type and on the 
+#' on the first resulting column there is the first order type and on the
 #' second column is the subsequent order type.
 #'
 #' @param orders - a list of orders mapped per customer
@@ -24,27 +24,28 @@ calculateConnectionMatrix <- function(orders, mapping) {
 }
 
 #' Calculates the connections matrix given the pair of orders
-#' 
+#'
 #'@param data - a data table with type1 and type2 columns that hold the first order type and second order type
 connectionsToCounts <- function(data) {
+  type <- type1 <- type2 <- NULL
   data <- data[!is.na(data)]
   data.list <- rbindlist(data)
-  
+
   res <- dcast(data.list, type1 ~ type2, fun.aggregate = length)
   res[, type := gsub(" ", "_", type1)]
   res[, type1 := NULL]
-  
+
   return (res)
 }
 
 
 #' The function that drills in each order and associates the types
 #' based on the order history
-#' 
+#'
 #'
 #' @param list.of.orders - a single list of orders
 #' @param order.mapping - a single list of items per order
-connectOrderMapping <- function(list.of.orders, order.mapping){
+connectOrderMapping <- function(list.of.orders, order.mapping) {
   type1 <- NULL
   type2 <- NULL
   for (i in 1:(length(list.of.orders) - 1)){
