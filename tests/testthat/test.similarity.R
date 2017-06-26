@@ -10,7 +10,7 @@ colnames(test.sim.matrix) <- rownames(test.sim.matrix) <- c("a", "b", "c", "d")
 
 test_that("Similarity matrix is calculated correctly.", {
    m <- matrix(c(1, 0, 0, 1, 1, 0, 0, 1, 1), nrow = 3, ncol = 3)
-   res <- cosineCpp(m)
+   res <- cosineMatrix(m)
    expect_identical(res[1, 3], 0, "Products are ortoganal, cosine is zero.")
    expect_identical(res[2, 2], 1, "Product self cosine is one.")
    expect_identical(res[2, 3], 0.5, "Product have overlapping values.")
@@ -75,6 +75,5 @@ test_that("Recommendations work with group", {
   viewed.skus <- c("z") # sku does not exist in the matrix.
   res <- getSimilarProducts(m, viewed.skus, 5, exclude.same = T)
   expect_identical(length(res), as.integer(0), "Result is empty for sku that is not in the similarity matrix")
-  expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T))
+  expect_warning(getSimilarProducts(m, viewed.skus, 5, exclude.same = T), regexp = "skus are missing.*z$")
 })
-
