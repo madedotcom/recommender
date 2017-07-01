@@ -102,6 +102,7 @@ test_that("Post order recommendations correctly retrieved", {
                                   affinity = post.order.matrix,
                                   sku.details = sku.details,
                                   n.of.types = 2)
+
   expect_equal(as.character(res), c("D", "C"), "Bring the correct post recommendations.")
 
   skus <- c("A3" = "D",
