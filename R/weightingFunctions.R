@@ -1,5 +1,6 @@
 #' A function that applies a weighting factor to the columns of a table
 #'
+#' @export
 #' @param data a table with similarity scores
 #' @param weights a vector with weights for the columns of the data table
 #' @param default a default weight to be applied
@@ -11,7 +12,7 @@ abjustSimMatrix <- function(data, weights, default = 0) {
   weights.given <- data.table(sku = names(weights),
                               weights = weights, key = "sku")
   weights.given <- unique(weights.given, by = "sku")
-  
+
   weights.final <- merge(weights.init, weights.given, by = "sku", all.x=TRUE)
 
   weights.final[, weight := pmax(weights.x, weights.y, na.rm = TRUE)]

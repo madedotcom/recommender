@@ -18,8 +18,8 @@ getComplimentaryProducts <- function(sim.matrix, skus, values, exclude.same = TR
   types <- getNextOrderTopTypes(sku.types, affinity, n.of.types, exclude.same)
   selected.skus <- sku.details[category %in% types]
 
-  positions.to.retain <- (row.names(sim.matrix) %in% selected.skus$sku)
-  rec <- getSimilarProducts(sim.matrix[, positions.to.retain], skus, values, exclude.same = TRUE)
+  positions.to.retain <- (rownames(sim.matrix) %in% selected.skus$sku)
+  rec <- recommendSimilar(sim.matrix[, positions.to.retain], skus, values, exclude.same = TRUE)
 
   return (rec)
 }
