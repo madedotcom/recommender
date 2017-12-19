@@ -15,7 +15,7 @@ similarityRecommender <- function(data, filter = NULL, weights = NULL) {
   m <- userProductHitsToMatrix(data)
   m <- cosineMatrix(m)
   m <- abjustSimMatrix(m, weights)
-  if(is.null(filter)) filter <- colnames(m) # all products will be used
+  if (is.null(filter)) filter <- colnames(m) # all products will be used
   m <- m[, filter]
   model <- new("similarity.recommender", sim = m)
   return(model)
@@ -46,7 +46,7 @@ similarity.predictor <- function(object, newdata) {
   # only include products that are in the model
   target.skus <- intersect(unique(newdata[, sku]), rownames(object@sim))
   similarity <- melt(object@sim[target.skus, , drop = FALSE], na.rm = T)
-  if(nrow(similarity) == 0L) return (as.numeric(NULL))
+  if (nrow(similarity) == 0L) return(as.numeric(NULL))
   colnames(similarity) <- c("sku", "sku.rec", "score")
   similarity <- data.table(similarity, key = c("sku", "sku.rec"))
   scores <- similarity[newdata][, score]
@@ -62,12 +62,12 @@ similarity.predictor <- function(object, newdata) {
 #' @param filter function generated with makeRecommendationsFilter()
 recommendSimilarProducts <- function(model, hits, exclude.same = TRUE,
                                      filter = makeRecommendationsFilter()) {
-  visitor.id <- sku <- sku.rec <- sim <- group <- same <- NULL
+  visitor.id <- sku <- sku.rec <- sim <- NULL
 
   hits.l <- split(hits, f = substr(hits$visitor.id, 1, 3))
   res <- mclapply(hits.l, function(visitor.hits) {
     newdata <- expandHits(model, visitor.hits)
-    if(exclude.same) { # exclude seen products from recommendations
+    if (exclude.same) { # exclude seen products from recommendations
       newdata <- excludeSame(newdata)
     }
     newdata$sim <- predict(model, newdata)
@@ -82,7 +82,44 @@ recommendSimilarProducts <- function(model, hits, exclude.same = TRUE,
   newdata <- rbindlist(res)
   setkeyv(newdata, c("visitor.id", "sku"))
 
-  return (newdata)
+  return(newdata)
+}
+
+#' Recommend products in item-to-item scenario
+#'
+#' @export
+#'
+#' @param model similarity model object
+#' @param skus data.table of product details with sku field as unique identifier.
+#' @param group.column name of the column that will be used for grouping
+#' @param limit number of records to return per product
+recommendComplimentaryProducts <- function(model, skus,
+                                           group.column = "sku",
+                                           limit = 20L) {
+  sku <- sku.rec <- sim <- group.rec <- NULL
+
+  similarity <- melt(model@sim, na.rm = T, variable.factor = FALSE)
+  similarity <- data.table(similarity)
+  colnames(similarity) <- c("sku", "sku.rec", "sim")
+  similarity[, sku := as.character(sku)]
+  similarity[, sku.rec := as.character(sku.rec)]
+  dt <- merge(skus, similarity, by = "sku")
+  dt <- dt[sku != sku.rec]
+
+  # At this point direction of recommendation is not important as model is simetrical.
+  # This will be used here to keep only one value per group in the sku column,
+  # while columns will be renamed later to achieve correct result.
+  groups <- skus[, .(sku.rec = sku, group.rec = get(group.column))]
+  dt <- merge(dt, groups, by = "sku.rec")
+  dt <- dt[get(group.column) != group.rec] # exlude products within the same group
+
+  # Get best record per each available group for a given sku
+  dt <- dt[dt[, .I[sim == max(sim)], by = .(sku, group.rec)]$V1]
+
+  # Count results and limit the records
+  dt <- dt[order(sim, decreasing = TRUE), head(.SD, limit), by = sku]
+  dt <- dt[order(sku, -sim), .(sku, sku.rec, sim)]
+  invisible(dt)
 }
 
 #' Expand visitor product hits data to dataset for prediction
@@ -93,7 +130,7 @@ expandHits <- function(object, data) {
   sku <- dummy <- NULL
 
   missing.skus <- setdiff(unique(data[, sku]), rownames(object@sim))
-  if(length(missing.skus) > 0) {
+  if (length(missing.skus) > 0) {
     warning("Following skus are missing from the similarity model: ", paste(missing.skus, collapse = ", "))
   }
 
