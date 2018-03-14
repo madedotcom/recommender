@@ -2,7 +2,7 @@
 % Please edit documentation in R/similarModel.R
 \name{recommendComplimentaryProducts}
 \alias{recommendComplimentaryProducts}
-\title{Recommend products in product-to-product scenario}
+\title{Recommend products in item-to-item scenario}
 \usage{
 recommendComplimentaryProducts(model, skus, group.column = "sku",
   limit = 20L)
@@ -17,5 +17,5 @@ recommendComplimentaryProducts(model, skus, group.column = "sku",
 \item{limit}{number of records to return per product}
 }
 \description{
-Recommend products in product-to-product scenario
+Recommend products in item-to-item scenario
 }

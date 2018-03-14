@@ -14,7 +14,7 @@ setClass("similarity.recommender", slots = c(sim = "matrix"))
 similarityRecommender <- function(data, filter = NULL, weights = NULL) {
   m <- userProductHitsToMatrix(data)
   m <- cosineMatrix(m)
-  m <- abjustSimMatrix(m, weights)
+  m <- adjustSimMatrix(m, weights)
   if (is.null(filter)) filter <- colnames(m) # all products will be used
   m <- m[, filter]
   model <- new("similarity.recommender", sim = m)
@@ -46,7 +46,7 @@ similarity.predictor <- function(object, newdata) {
   # only include products that are in the model
   target.skus <- intersect(unique(newdata[, sku]), rownames(object@sim))
   similarity <- melt(object@sim[target.skus, , drop = FALSE], na.rm = T)
-  if (nrow(similarity) == 0L) return(as.numeric(NULL))
+  if (nrow(similarity) == 0L) return(NA_real_)
   colnames(similarity) <- c("sku", "sku.rec", "score")
   similarity <- data.table(similarity, key = c("sku", "sku.rec"))
   scores <- similarity[newdata][, score]
